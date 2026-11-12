@@ -24,7 +24,7 @@ button:hover{border-color:var(--accent)}.toolbar{display:flex;gap:9px;flex-wrap:
 .result:last-child{border:0}.result strong{text-align:right;font-variant-numeric:tabular-nums}
 .big{font-size:22px}.positive{color:var(--accent)}.negative{color:var(--bad)}
 hr{border:0;border-top:1px solid var(--line);margin:12px 0}
-@media(min-width:620px){.twocol{display:grid;grid-template-columns:1fr 1fr;column-gap:22px}.field{grid-template-columns:minmax(0,1fr) 120px}}
+@media(min-width:620px){.twocol{display:grid;grid-template-columns:repeat(3,1fr);column-gap:22px}.field{grid-template-columns:minmax(0,1fr) 120px}}
 @media(max-width:390px){main{padding:14px 10px}.card{padding:13px}.field{grid-template-columns:minmax(0,1fr) 105px;gap:8px}}
 </style>
 </head>
@@ -44,10 +44,10 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 
 <section class="card">
 <h2>Compétences</h2>
-<div class="twocol">
+<div class="threecol">
   <div class="field"><label for="hp">Santé Max</label><input id="hp" type="number" step="any" value="150"></div>
-  <div class="field"><label for="armor">Armure (%)</label><input id="armor" type="number" step="any" value="49"></div>
   <div class="field"><label for="dodge">Esquive (%)</label><input id="dodge" type="number" step="any" value="46"></div>
+  <div class="field"><label for="armor">Armure (%)</label><input id="armor" type="number" step="any" value="49"></div>
 </div>
 </section>
 
