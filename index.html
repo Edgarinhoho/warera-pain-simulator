@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rentabilité prise de pain – WarEra</title>
+<title>Rentabilité prise de pain sous malus – WarEra</title>
 <style>
 :root{color-scheme:dark;--bg:#10151d;--panel:#1a2430;--panel2:#202d3b;--text:#edf3f8;--muted:#a9b7c5;--line:#354555;--accent:#7cc7a3;--bad:#ff8f8f}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -58,7 +58,6 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
   <div class="field"><label for="greenValue">Valeur caisse verte ($)</label><input id="greenValue" type="number" step="any" value="3.799"></div>
   <div class="field"><label for="redValue">Valeur caisse rouge ($)</label><input id="redValue" type="number" step="any" value="24.698"></div>
 </div>
-<p class="hint">La chance de caisse rouge est calculée automatiquement à 1/100 de la chance verte.</p>
 </section>
 
 <section class="card">
@@ -66,7 +65,7 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 <div class="twocol">
   <div class="field"><label for="food">Prix pain ($)</label><input id="food" type="number" step="any" value="1.567"></div>
   <div class="field"><label for="ammo">Prix munition ($)</label><input id="ammo" type="number" step="any" value="0.198"></div>
-  <div class="field"><label for="equip">Valeur équipement vert ($)</label><input id="equip" type="number" step="any" value="4.51"></div>
+  <div class="field"><label for="equip">Valeur moyenne équipement vert (stat range max) ($)</label><input id="equip" type="number" step="any" value="4.51"></div>
 </div>
 <p class="hint">Valeur provisoire : à confirmer avec les équipements verts au stat range 10 uniquement.</p>
 </section>
