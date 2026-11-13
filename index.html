@@ -72,9 +72,10 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 <section class="card">
 <h2>Caractéristiques de combat</h2>
 <div class="twocol">
-  <div class="field"><label for="attack">Attaque (avec pilule +60 %)</label><input id="attack" type="number" step="any" value="981"></div>
-  <div class="field"><label for="pillReference">Bonus pilule de référence (%)</label><input id="pillReference" type="number" step="any" value="60"></div>
-  <div class="field"><label for="pillActive">Effet pilule simulé (%)</label><input id="pillActive" type="number" step="any" value="-60"></div>
+  <div class="field">
+  <label for="attack">Attaque (débuff appliqué)</label>
+  <input id="attack" type="number" step="any" value="245.25">
+</div>
   <div class="field"><label for="battle">Bonus d'attaque bataille (%)</label><input id="battle" type="number" step="any" value="70"></div>
   <div class="field"><label for="precision">Précision (%)</label><input id="precision" type="number" step="any" value="100"></div>
   <div class="field"><label for="critChance">Chance de critique (%)</label><input id="critChance" type="number" step="any" value="55"></div>
@@ -113,43 +114,102 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 <p class="hint">Hypothèses du modèle : un tir raté inflige 50 % des dégâts et ne peut pas être critique. La prime est estimée proportionnellement aux dégâts totaux, sans arrondi par tranche de 1 000. Les probabilités et dégâts sont des valeurs moyennes théoriques.</p>
 </main>
 <script>
-const ids=["hp","armor","dodge","greenChance","greenValue","redValue","food","ammo","equip","attack","pillReference","pillActive","battle","precision","critChance","critDamage","bounty"];
-const defaults={hp:150,armor:49,dodge:46,greenChance:15,greenValue:3.799,redValue:24.698,food:1.567,ammo:.198,equip:4.51,attack:981,pillReference:60,pillActive:-60,battle:70,precision:100,critChance:55,critDamage:270,bounty:.02};
-const get=id=>{const x=Number(document.getElementById(id).value);return Number.isFinite(x)?x:0};
+
+const ids=["hp","armor","dodge","greenChance","greenValue","redValue","food","ammo","equip","attack","battle","precision","critChance","critDamage","bounty"];
+
+const defaults={
+ hp:150,
+ armor:49,
+ dodge:46,
+ greenChance:15,
+ greenValue:3.799,
+ redValue:24.698,
+ food:1.567,
+ ammo:.198,
+ equip:4.51,
+ attack:245.25,
+ battle:70,
+ precision:100,
+ critChance:55,
+ critDamage:270,
+ bounty:.02
+};
+
+const get=id=>{
+ const x=Number(document.getElementById(id).value);
+ return Number.isFinite(x)?x:0;
+};
+
 const money=x=>x.toLocaleString("fr-FR",{minimumFractionDigits:3,maximumFractionDigits:3})+" $";
 const number=(x,d=2)=>x.toLocaleString("fr-FR",{minimumFractionDigits:d,maximumFractionDigits:d});
-function put(id,value){document.getElementById(id).textContent=value}
+
+function put(id,value){
+ document.getElementById(id).textContent=value;
+}
+
 function calculate(){
  const hp=get("hp"),armor=get("armor"),dodge=get("dodge");
  const recovered=hp*.1;
  const incoming=10*(1-armor/100)*(1-dodge/100);
  const attacks=incoming>0?recovered/incoming:0;
- const baseAttack=get("attack")/(1+get("pillReference")/100);
- const effectiveAttack=baseAttack*(1+get("pillActive")/100)*(1+get("battle")/100);
+
+ const effectiveAttack=get("attack")*(1+get("battle")/100);
+
  const precision=Math.max(0,Math.min(100,get("precision")))/100;
  const crit=Math.max(0,Math.min(100,get("critChance")))/100;
+
  const avgDamage=effectiveAttack*((1-precision)*.5+precision*(1+crit*get("critDamage")/100));
  const totalDamage=attacks*avgDamage;
+
  const bountyGain=totalDamage/1000*get("bounty");
  const greenGain=attacks*get("greenChance")/100*get("greenValue");
  const redGain=attacks*get("greenChance")/10000*get("redValue");
+
  const ammoCost=attacks*get("ammo");
  const pistolWear=attacks*get("equip")*.01;
  const otherWear=attacks*get("equip")*.01*5*(1-dodge/100);
+
  const totalGain=greenGain+redGain+bountyGain;
  const totalCost=get("food")+ammoCost+pistolWear+otherWear;
  const net=totalGain-totalCost;
  const profitability=totalCost?net/totalCost*100:0;
- put("recovered",number(recovered));put("incoming",number(incoming,3));put("attacks",number(attacks,3));
- put("baseAttack",number(baseAttack));put("effectiveAttack",number(effectiveAttack));put("avgDamage",number(avgDamage));put("totalDamage",number(totalDamage));
- put("greenGain",money(greenGain));put("redGain",money(redGain));put("bountyGain",money(bountyGain));put("totalGain",money(totalGain));
- put("foodCost",money(get("food")));put("ammoCost",money(ammoCost));put("pistolWear",money(pistolWear));put("otherWear",money(otherWear));put("totalCost",money(totalCost));
- put("net",money(net));put("topNet",money(net));put("profitability",number(profitability)+" %");
- for(const id of ["net","topNet"]){document.getElementById(id).className=(net>=0?"positive":"negative")+(id==="topNet"?" net":"");}
+
+ put("recovered",number(recovered));
+ put("incoming",number(incoming,3));
+ put("attacks",number(attacks,3));
+ put("effectiveAttack",number(effectiveAttack));
+ put("avgDamage",number(avgDamage));
+ put("totalDamage",number(totalDamage));
+
+ put("greenGain",money(greenGain));
+ put("redGain",money(redGain));
+ put("bountyGain",money(bountyGain));
+ put("totalGain",money(totalGain));
+
+ put("foodCost",money(get("food")));
+ put("ammoCost",money(ammoCost));
+ put("pistolWear",money(pistolWear));
+ put("otherWear",money(otherWear));
+ put("totalCost",money(totalCost));
+
+ put("net",money(net));
+ put("topNet",money(net));
+ put("profitability",number(profitability)+" %");
+
+ for(const id of ["net","topNet"]){
+  document.getElementById(id).className=(net>=0?"positive":"negative")+(id==="topNet"?" net":"");
+ }
 }
+
 ids.forEach(id=>document.getElementById(id).addEventListener("input",calculate));
-document.getElementById("reset").addEventListener("click",()=>{for(const id of ids)document.getElementById(id).value=defaults[id];calculate()});
+
+document.getElementById("reset").addEventListener("click",()=>{
+ for(const id of ids)document.getElementById(id).value=defaults[id];
+ calculate();
+});
+
 calculate();
+
 </script>
 </body>
 </html>
