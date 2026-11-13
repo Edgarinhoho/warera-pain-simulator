@@ -90,7 +90,6 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
   <div class="result"><span>Dégâts reçus moyens par attaque</span><strong id="incoming"></strong></div>
   <div class="result"><span>Attaques supplémentaires</span><strong id="attacks"></strong></div>
   <hr>
-  <div class="result"><span>Attaque sans pilule</span><strong id="baseAttack"></strong></div>
   <div class="result"><span>Attaque effective</span><strong id="effectiveAttack"></strong></div>
   <div class="result"><span>Dégâts moyens par tir</span><strong id="avgDamage"></strong></div>
   <div class="result"><span>Dégâts totaux estimés</span><strong id="totalDamage"></strong></div>
@@ -117,7 +116,7 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 const ids=["hp","armor","dodge","greenChance","greenValue","redValue","food","ammo","equip","attack","battle","precision","critChance","critDamage","bounty"];
 
 const defaults={
- hp:150,
+ hp:1650,
  armor:49,
  dodge:46,
  greenChance:15,
@@ -125,13 +124,13 @@ const defaults={
  redValue:24.698,
  food:1.567,
  ammo:.198,
- equip:4.51,
- attack:245.25,
- battle:70,
+ equip:4.54,
+ attack:245,
+ battle:60,
  precision:100,
  critChance:55,
  critDamage:270,
- bounty:.02
+ bounty:.00
 };
 
 const get=id=>{
