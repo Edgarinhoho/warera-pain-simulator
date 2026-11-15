@@ -295,8 +295,9 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
     );
 
     if (!response.ok) {
-      throw new Error("Erreur HTTP " + response.status);
-    }
+  const details = await response.text();
+  throw new Error("HTTP " + response.status + " : " + details);
+}
 
     const payload = await response.json();
 
