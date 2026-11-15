@@ -300,17 +300,21 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
       "case2"
     ];
 
-    const input = encodeURIComponent(JSON.stringify({
+    const response = await fetch(
+  "https://api2.warera.io/trpc/tradingOrder.getTopOrdersPerItemCode",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
       json: {
         itemCodes,
         limit: 1
       }
-    }));
-
-    const response = await fetch(
-      "https://api2.warera.io/trpc/tradingOrder.getTopOrdersPerItemCode?input=" + input
-    );
-
+    })
+  }
+);
     if (!response.ok) {
       const details = await response.text();
       throw new Error("HTTP " + response.status + " : " + details);
