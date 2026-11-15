@@ -66,6 +66,8 @@ gap:8px;
 </div>
 <div class="toolbar">
   <button id="reset">Réinitialiser les valeurs</button>
+  <button id="updatePrices">Actualiser les valeurs marchandes</button>
+  <span id="priceStatus" class="hint">Prix non actualisés</span>
 </div>
 
 <section class="card">
@@ -283,7 +285,61 @@ document.getElementById("reset").addEventListener("click",()=>{
  for(const id of ids)document.getElementById(id).value=defaults[id];
  calculate();
 });
+document.getElementById("updatePrices").addEventListener("click", async () => {
+  const status = document.getElementById("priceStatus");
+  status.textContent = "Récupération des prix...";
 
+  try {
+    const response = await fetch(
+      "https://gateway.warerastats.io/trpc/itemTrading.getPrices"
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur HTTP " + response.status);
+    }
+
+    const payload = await response.json();
+
+    const prices =
+      payload?.result?.data?.json ??
+      payload?.result?.data ??
+      payload?.data?.json ??
+      payload;
+
+    const mapping = {
+      breadPrice: "bread",
+      steakPrice: "steak",
+      fishPrice: "cookedFish",
+      ammo: "lightAmmo",
+      greenValue: "case1",
+      redValue: "case2"
+    };
+
+    let updated = 0;
+
+    for (const [field, item] of Object.entries(mapping)) {
+      const price = prices[item];
+
+      if (typeof price === "number" && Number.isFinite(price)) {
+        document.getElementById(field).value = price.toFixed(3);
+        updated++;
+      }
+    }
+
+    if (updated !== Object.keys(mapping).length) {
+      throw new Error("Certaines valeurs sont absentes de la réponse API.");
+    }
+
+    calculate();
+
+    status.textContent =
+      "Prix actualisés le " + new Date().toLocaleString("fr-FR");
+
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Échec de l'actualisation des prix.";
+  }
+});
 calculate();
 
 </script>
