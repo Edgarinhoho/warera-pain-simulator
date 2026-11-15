@@ -291,7 +291,7 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
 
   try {
     const response = await fetch(
-      "https://gateway.warerastats.io/trpc/itemTrading.getPrices"
+      "https://api2.warera.io/trpc/itemTrading.getPrices"
     );
 
     if (!response.ok) {
