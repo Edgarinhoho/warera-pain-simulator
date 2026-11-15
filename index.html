@@ -308,11 +308,9 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      json: {
-        itemCodes,
-        limit: 1
-      }
-    })
+  itemCodes,
+  limit: 1
+})
   }
 );
     if (!response.ok) {
