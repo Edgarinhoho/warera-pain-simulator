@@ -96,29 +96,32 @@ gap:8px;
 </section>
 
 <section class="card">
-<h2>Résultats estimés</h2>
-<div class="results" aria-live="polite">
-  <div class="result"><span>PV récupérés par pain</span><strong id="recovered"></strong></div>
-  <div class="result"><span>Dégâts reçus moyens par attaque</span><strong id="incoming"></strong></div>
-  <div class="result"><span>Attaques supplémentaires</span><strong id="attacks"></strong></div>
-  <hr>
-  <div class="result"><span>Attaque effective</span><strong id="effectiveAttack"></strong></div>
-  <div class="result"><span>Dégâts moyens par tir</span><strong id="avgDamage"></strong></div>
-  <div class="result"><span>Dégâts totaux estimés</span><strong id="totalDamage"></strong></div>
-  <hr>
-  <div class="result"><span>Gain caisses vertes</span><strong id="greenGain"></strong></div>
-  <div class="result"><span>Gain caisses rouges</span><strong id="redGain"></strong></div>
-  <div class="result"><span>Primes estimées</span><strong id="bountyGain"></strong></div>
-  <div class="result"><b>Total gains</b><strong id="totalGain"></strong></div>
-  <hr>
-  <div class="result"><span>Coût pain</span><strong id="foodCost"></strong></div>
-  <div class="result"><span>Coût munitions</span><strong id="ammoCost"></strong></div>
-  <div class="result"><span>Usure pistolet</span><strong id="pistolWear"></strong></div>
-  <div class="result"><span>Usure des 5 autres équipements</span><strong id="otherWear"></strong></div>
-  <div class="result"><b>Total coûts</b><strong id="totalCost"></strong></div>
-  <hr>
-  <div class="result big"><b>Bénéfice net</b><strong id="net"></strong></div>
-  <div class="result"><b>Rentabilité</b><strong id="profitability"></strong></div>
+<h2>Caractéristiques de combat</h2>
+<div class="twocol">
+  <div class="field">
+    <label for="attack">Attaque (débuff appliqué)</label>
+    <input id="attack" type="number" step="1" value="245">
+  </div>
+
+  <div class="field">
+    <label for="precision">Précision (%)</label>
+    <input id="precision" type="number" step="any" value="100">
+  </div>
+
+  <div class="field">
+    <label for="critChance">Chance de critique (%)</label>
+    <input id="critChance" type="number" step="any" value="55">
+  </div>
+
+  <div class="field">
+    <label for="critDamage">Dégâts critiques supplémentaires (%)</label>
+    <input id="critDamage" type="number" step="any" value="270">
+  </div>
+
+  <div class="field">
+    <label for="battle">Bonus d'attaque bataille (%)</label>
+    <input id="battle" type="number" step="any" value="70">
+  </div>
 </div>
 </section>
 <p class="hint">Hypothèses du modèle : un tir raté inflige 50 % des dégâts et ne peut pas être critique. La prime est estimée proportionnellement aux dégâts totaux, sans arrondi par tranche de 1 000. Les probabilités et dégâts sont des valeurs moyennes théoriques.</p>
