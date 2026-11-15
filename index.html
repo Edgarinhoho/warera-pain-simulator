@@ -336,9 +336,9 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
       "Prix actualisés le " + new Date().toLocaleString("fr-FR");
 
   } catch (error) {
-    console.error(error);
-    status.textContent = "Échec de l'actualisation des prix.";
-  }
+  console.error("Erreur actualisation des prix :", error);
+  status.textContent = "Erreur : " + error.message;
+}
 });
 calculate();
 
