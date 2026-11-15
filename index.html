@@ -14,7 +14,7 @@ h1{font-size:clamp(22px,4vw,30px);margin:0}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:13px 0}
 h2{font-size:17px;margin:0 0 12px}
 .field{display:grid;grid-template-columns:minmax(0,1fr) 125px;align-items:center;gap:12px;margin:9px 0}
-label{font-size:14px}.field input{width:100%;background:#0f1720;border:1px solid #526477;border-radius:8px;color:var(--text);padding:9px 10px;font:inherit;text-align:right;min-width:0}
+label{font-size:14px}.field input,.field select{width:100%;background:#0f1720;border:1px solid #526477;border-radius:8px;color:var(--text);padding:9px 10px;font:inherit;text-align:right;min-width:0}
 input:focus{outline:2px solid var(--accent);border-color:transparent}
 button{border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);padding:10px 14px;font:inherit;cursor:pointer}
 button:hover{border-color:var(--accent)}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
@@ -77,9 +77,41 @@ gap:8px;
 <section class="card">
 <h2>Dépenses</h2>
 <div class="twocol">
-  <div class="field"><label for="food">Prix pain</label><input id="food" type="number" step="0.001" value="1.567"></div>
-  <div class="field"><label for="ammo">Prix munition</label><input id="ammo" type="number" step="0.001" value="0.198"></div>
-  <div class="field"><label for="equip">Valeur moyenne équipement vert (stat range max)</label><input id="equip" type="number" step="0.01" value="4.51"></div>
+
+  <div class="field">
+    <label for="foodType">Aliment consommé</label>
+    <select id="foodType">
+      <option value="bread">Pain</option>
+      <option value="steak">Steak</option>
+      <option value="fish">Poisson</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="breadPrice">Prix du pain ($)</label>
+    <input id="breadPrice" type="number" step="0.001" value="1.567">
+  </div>
+
+  <div class="field">
+    <label for="steakPrice">Prix du steak ($)</label>
+    <input id="steakPrice" type="number" step="0.001" value="0">
+  </div>
+
+  <div class="field">
+    <label for="fishPrice">Prix du poisson ($)</label>
+    <input id="fishPrice" type="number" step="0.001" value="0">
+  </div>
+
+  <div class="field">
+    <label for="ammo">Prix munition</label>
+    <input id="ammo" type="number" step="0.001" value="0.198">
+  </div>
+
+  <div class="field">
+    <label for="equip">Valeur moyenne équipement vert (stat range max)</label>
+    <input id="equip" type="number" step="any" value="4.51">
+  </div>
+
 </div>
 </section>
 
@@ -152,7 +184,7 @@ gap:8px;
 </main>
 <script>
 
-const ids=["hp","armor","dodge","greenChance","greenValue","redValue","food","ammo","equip","attack","battle","precision","critChance","critDamage","bounty"];
+const ids=["hp","armor","dodge","greenChance","greenValue","redValue","foodType","breadPrice","steakPrice","fishPrice","ammo","equip","attack","battle","precision","critChance","critDamage","bounty"];
 
 const defaults={
  hp:160,
@@ -161,7 +193,10 @@ const defaults={
  greenChance:15,
  greenValue:3.799,
  redValue:24.698,
- food:1.567,
+ foodType:"bread",
+breadPrice:1.567,
+steakPrice:2.932,
+fishPrice:7.185,
  ammo:.198,
  equip:4.54,
  attack:245,
@@ -186,7 +221,7 @@ function put(id,value){
 
 function calculate(){
  const hp=get("hp"),armor=get("armor"),dodge=get("dodge");
- const recovered=hp*.1;
+ const foodType=document.getElementById("foodType").value;  const foodRates={  bread:0.10,  steak:0.15,  fish:0.20 };  const foodPrices={  bread:get("breadPrice"),  steak:get("steakPrice"),  fish:get("fishPrice") };  const recovered=hp*(foodRates[foodType]||0.10); const foodCost=foodPrices[foodType];
  const incoming=10*(1-armor/100)*(1-dodge/100);
  const attacks=incoming>0?recovered/incoming:0;
 
@@ -207,7 +242,7 @@ function calculate(){
  const otherWear=attacks*get("equip")*.01*5*(1-dodge/100);
 
  const totalGain=greenGain+redGain+bountyGain;
- const totalCost=get("food")+ammoCost+pistolWear+otherWear;
+ const totalCost=foodCost+ammoCost+pistolWear+otherWear;
  const net=totalGain-totalCost;
  const profitability=totalCost?net/totalCost*100:0;
 
@@ -223,7 +258,7 @@ function calculate(){
  put("bountyGain",money(bountyGain));
  put("totalGain",money(totalGain));
 
- put("foodCost",money(get("food")));
+ put("foodCost",money(foodCost));
  put("ammoCost",money(ammoCost));
  put("pistolWear",money(pistolWear));
  put("otherWear",money(otherWear));
