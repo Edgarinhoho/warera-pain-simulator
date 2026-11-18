@@ -69,7 +69,27 @@ gap:8px;
   <button id="updatePrices">Actualiser les valeurs marchandes</button>
   <span id="priceStatus" class="hint">Prix non actualisés</span>
 </div>
+<div style="margin:16px 0;padding:14px;border:1px solid #ccc;border-radius:8px">
+  <h3 style="margin:0 0 12px">Prix plancher équipement jaune</h3>
 
+  <div style="display:flex;flex-wrap:wrap;gap:20px">
+    <div>
+      <small>Ferraille (486 unités)</small>
+      <div id="scrapsPrice">—</div>
+    </div>
+
+    <div>
+      <small>Acier (16 unités)</small>
+      <div id="steelPrice">—</div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;padding-top:10px;border-top:1px solid #ccc">
+    <small>Prix plancher calculé</small>
+    <div id="yellowFloorPrice" style="font-size:24px;font-weight:bold">—</div>
+  </div>
+</div>
+  
 <section class="card">
 <h2>Compétences</h2>
 <div class="threecol">
@@ -300,7 +320,9 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
       "cookedFish",
       "lightAmmo",
       "case1",
-      "case2"
+"case2",
+"scraps",
+"steel"
     ];
 
     const response = await fetch(
