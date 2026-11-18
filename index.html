@@ -353,13 +353,15 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
       payload;
 
     const mapping = {
-      breadPrice: "bread",
-      steakPrice: "steak",
-      fishPrice: "cookedFish",
-      ammo: "lightAmmo",
-      greenValue: "case1",
-      redValue: "case2"
-    };
+  breadPrice: "bread",
+  steakPrice: "steak",
+  fishPrice: "cookedFish",
+  ammo: "lightAmmo",
+  greenValue: "case1",
+  redValue: "case2",
+  scrapsPrice: "scraps",
+  steelPrice: "steel"
+};
 
     for (const [field, item] of Object.entries(mapping)) {
       const sellOrders = orders[item]?.sellOrders || [];
@@ -376,9 +378,21 @@ document.getElementById("updatePrices").addEventListener("click", async () => {
         throw new Error("Prix invalide pour " + item);
       }
 
-      document.getElementById(field).value = bestAsk.toFixed(3);
-    }
+    const element = document.getElementById(field);
 
+if (field === "scrapsPrice" || field === "steelPrice") {
+  element.textContent = bestAsk.toFixed(3);
+} else {
+  element.value = bestAsk.toFixed(3);
+}
+    }
+const scraps = Number(document.getElementById("scrapsPrice").textContent);
+const steel = Number(document.getElementById("steelPrice").textContent);
+
+const yellowFloor = (486 * scraps) + (16 * steel);
+
+document.getElementById("yellowFloorPrice").textContent =
+  yellowFloor.toFixed(3) + " $";
     calculate();
 
     status.textContent =
